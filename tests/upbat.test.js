@@ -1,22 +1,15 @@
 'use strict';
 
 require('should');
-const fs = require('fs');
-
-var levels = require('../lib/levels');
 
 describe('Uploader Battery', function ( ) {
   var data = {devicestatus: [{mills: Date.now(), uploader: {battery: 20}}]};
 
   it('display uploader battery status', function (done) {
+    var sandbox = require('../lib/sandbox')();
     var ctx = {
       settings: {}
-      , language: require('../lib/language')(fs)
     };
-    ctx.language.set('en');
-    ctx.levels = levels;
-    var sandbox = require('../lib/sandbox')(ctx);
-    
     var sbx = sandbox.clientInit(ctx, Date.now(), data);
 
     sbx.offerProperty = function mockedOfferProperty (name, setter) {
@@ -29,7 +22,7 @@ describe('Uploader Battery', function ( ) {
       done();
     };
 
-    var upbat = require('../lib/plugins/upbat')(ctx);
+    var upbat = require('../lib/plugins/upbat')();
     upbat.setProperties(sbx);
 
   });
@@ -45,14 +38,11 @@ describe('Uploader Battery', function ( ) {
           done();
         }
       }
-      , language: require('../lib/language')(fs)
-      , levels: levels
     };
-    ctx.language.set('en');
 
     var sandbox = require('../lib/sandbox')();
     var sbx = sandbox.clientInit(ctx, Date.now(), data);
-    var upbat = require('../lib/plugins/upbat')(ctx);
+    var upbat = require('../lib/plugins/upbat')();
     upbat.setProperties(sbx);
     upbat.updateVisualisation(sbx);
 
@@ -67,14 +57,11 @@ describe('Uploader Battery', function ( ) {
           done();
         }
       }
-      , language: require('../lib/language')(fs)
-      , levels: levels
     };
-    ctx.language.set('en');
 
     var sandbox = require('../lib/sandbox')();
     var sbx = sandbox.clientInit(ctx, Date.now(), {});
-    var upbat = require('../lib/plugins/upbat')(ctx);
+    var upbat = require('../lib/plugins/upbat')();
     upbat.setProperties(sbx);
     upbat.updateVisualisation(sbx);
   });
@@ -87,45 +74,34 @@ describe('Uploader Battery', function ( ) {
           options.hide.should.equal(true);
           done();
         }
-      }, language: require('../lib/language')(fs)
-      , levels: levels
+      }
     };
-    ctx.language.set('en');
 
     var sandbox = require('../lib/sandbox')();
     var sbx = sandbox.clientInit(ctx, Date.now(), {devicestatus: [{uploader: {battery: -1}}]});
-    var upbat = require('../lib/plugins/upbat')(ctx);
+    var upbat = require('../lib/plugins/upbat')();
     upbat.setProperties(sbx);
     upbat.updateVisualisation(sbx);
   });
 
-  it('should handle virtAsst requests', function (done) {
+  it('should handle alexa requests', function (done) {
 
     var ctx = {
       settings: {}
-      , language: require('../lib/language')(fs)
-      , levels: levels
     };
-    ctx.language.set('en');
 
     var sandbox = require('../lib/sandbox')();
     var sbx = sandbox.clientInit(ctx, Date.now(), data);
-    var upbat = require('../lib/plugins/upbat')(ctx);
+    var upbat = require('../lib/plugins/upbat')();
     upbat.setProperties(sbx);
 
-    upbat.virtAsst.intentHandlers.length.should.equal(2);
+    upbat.alexa.intentHandlers.length.should.equal(1);
 
-    upbat.virtAsst.intentHandlers[0].intentHandler(function next(title, response) {
-      title.should.equal('Uploader Battery');
+    upbat.alexa.intentHandlers[0].intentHandler(function next(title, response) {
+      title.should.equal('Uploader battery');
       response.should.equal('Your uploader battery is at 20%');
-      
-      upbat.virtAsst.intentHandlers[1].intentHandler(function next(title, response) {
-        title.should.equal('Uploader Battery');
-        response.should.equal('Your uploader battery is at 20%');
 
-        done();
-      }, [], sbx);
-      
+      done();
     }, [], sbx);
 
   });

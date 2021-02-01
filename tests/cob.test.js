@@ -1,15 +1,13 @@
 'use strict';
 
-const _ = require('lodash');
-const fs = require('fs');
-const language = require('../lib/language')(fs);
+var _ = require('lodash');
 
 require('should');
 
 describe('COB', function ( ) {
   var ctx = {};
   ctx.settings = {};
-  ctx.language = language;
+  ctx.language = require('../lib/language')();
 
   var cob = require('../lib/plugins/cob')(ctx);
   
@@ -98,7 +96,7 @@ describe('COB', function ( ) {
 
   });
 
-  it('should handle virtAsst requests', function (done) {
+  it('should handle alexa requests', function (done) {
     var data = {
       treatments: [{
         carbs: '8'
@@ -111,9 +109,9 @@ describe('COB', function ( ) {
     var sbx = sandbox.clientInit(ctx, Date.now(), data);
     cob.setProperties(sbx);
 
-    cob.virtAsst.intentHandlers.length.should.equal(1);
+    cob.alexa.intentHandlers.length.should.equal(1);
 
-    cob.virtAsst.intentHandlers[0].intentHandler(function next(title, response) {
+    cob.alexa.intentHandlers[0].intentHandler(function next(title, response) {
       title.should.equal('Current COB');
       response.should.equal('You have 8 carbohydrates on board');
       done();

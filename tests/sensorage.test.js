@@ -7,7 +7,6 @@ var levels = require('../lib/levels');
 describe('sage', function ( ) {
   var env = require('../env')();
   var ctx = {};
-  ctx.levels = levels;
   ctx.ddata = require('../lib/data/ddata')();
   ctx.notifications = require('../lib/notifications')(env, ctx);
   ctx.language = require('../lib/language')();
@@ -45,7 +44,6 @@ describe('sage', function ( ) {
         }
       }
     };
-    ctx.language = require('../lib/language')();
 
     var sbx = sandbox.clientInit(ctx, Date.now(), data);
     sage.setProperties(sbx);
@@ -73,7 +71,6 @@ describe('sage', function ( ) {
         }
       }
     };
-    ctx.language = require('../lib/language')();
 
     var sbx = sandbox.clientInit(ctx, Date.now(), data);
     sage.setProperties(sbx);
@@ -101,7 +98,6 @@ describe('sage', function ( ) {
         }
       }
     };
-    ctx.language = require('../lib/language')();
 
     var sbx = sandbox.clientInit(ctx, Date.now(), data);
     sage.setProperties(sbx);
@@ -131,7 +127,6 @@ describe('sage', function ( ) {
         }
       }
     };
-    ctx.language = require('../lib/language')();
 
     var sbx = sandbox.clientInit(ctx, Date.now(), data);
     sage.setProperties(sbx);

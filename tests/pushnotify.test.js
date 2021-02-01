@@ -9,7 +9,6 @@ describe('pushnotify', function ( ) {
     var env = require('../env')();
     var ctx = {};
 
-    ctx.levels = levels;
     ctx.notifications = require('../lib/notifications')(env, ctx);
 
     var notify = {
@@ -30,7 +29,7 @@ describe('pushnotify', function ( ) {
         }
     };
 
-    ctx.pushnotify = require('../lib/server/pushnotify')(env, ctx);
+    ctx.pushnotify = require('../lib/pushnotify')(env, ctx);
 
     ctx.pushnotify.emitNotification(notify);
 
@@ -42,7 +41,7 @@ describe('pushnotify', function ( ) {
   it('send a pushover notification, but only 1 time', function (done) {
     var env = require('../env')();
     var ctx = {};
-    ctx.levels = levels;
+
     ctx.notifications = require('../lib/notifications')(env, ctx);
 
     var notify = {
@@ -62,7 +61,7 @@ describe('pushnotify', function ( ) {
         }
     };
 
-    ctx.pushnotify = require('../lib/server/pushnotify')(env, ctx);
+    ctx.pushnotify = require('../lib/pushnotify')(env, ctx);
 
     ctx.pushnotify.emitNotification(notify);
 
@@ -74,7 +73,6 @@ describe('pushnotify', function ( ) {
   it('send a pushover alarm, and then cancel', function (done) {
     var env = require('../env')();
     var ctx = {};
-    ctx.levels = levels;
 
     ctx.notifications = require('../lib/notifications')(env, ctx);
 
@@ -99,7 +97,7 @@ describe('pushnotify', function ( ) {
       }
     };
 
-    ctx.pushnotify = require('../lib/server/pushnotify')(env, ctx);
+    ctx.pushnotify = require('../lib/pushnotify')(env, ctx);
 
     //first send the warning
     ctx.pushnotify.emitNotification(notify);
